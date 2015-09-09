@@ -63,18 +63,19 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\ThirtParty\websocket\include;..\ThirtParty\rose;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\3rdParty\boost_1_59_0\include;..\3rdParty\websocket\include;..\3rdParty\rose;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>..\ThirtParty\rose;..\ThirtParty\websocket;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>PushFramework.lib;WebsocketProtocol.lib;ROSE_CDVSLib.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\3rdParty\rose;..\3rdParty\boost_1_59_0\lib;..\3rdParty\websocket;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>PushFramework.lib;WebsocketProtocol.lib;ROSE_CDVSLib.lib;boost_filesystem-vc100-mt-1_59.lib;boost_system-vc100-mt-1_59.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="DatabaseHandler.h" />
     <ClInclude Include="EchoService.h" />
     <ClInclude Include="GroupCommunicationService.h" />
     <ClInclude Include="ImageSearch.h" />
@@ -87,6 +88,7 @@
     <ClInclude Include="WebsocketService.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="DatabaseHandler.cpp" />
     <ClCompile Include="EchoService.cpp" />
     <ClCompile Include="GroupCommunicationService.cpp" />
     <ClCompile Include="ImageSearch.cpp" />

@@ -5,6 +5,7 @@
 #include "WebsocketDataMessage.h"
 
 #include "ImageSearch.h"
+#include "DatabaseHandler.h"
 
 EchoService::EchoService(void)
 {
@@ -23,7 +24,8 @@ void EchoService::handle( LogicalConnection* pClient, IncomingPacket* pRequest )
 	response.SetArguments(request.GetArg1());
 
 	try {
-		ImageSearch::run();
+		//ImageSearch::run();
+		DatabaseHandler::buildIndex();
 	}
 	catch(exception & ex)				// catch any exception, including CdvsException
 	{
