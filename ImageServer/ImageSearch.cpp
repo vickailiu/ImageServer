@@ -1,15 +1,18 @@
 #include "StdAfx.h"
 #include "ImageSearch.h"
 
-#include <stdio.h>
-#include <iostream>
-#include <fstream>
-#include <string>
-using namespace std; 
+#include "Path.h"
 
 #include "ROSE_CDVSLib.h"
+#include "boost/filesystem/operations.hpp"
+#include "boost/filesystem/path.hpp"
+#include "boost/progress.hpp"
 
-void ImageSearch::run(void){
+#define BOOST_FILESYSTEM_NO_DEPRECATED
+namespace fs = boost::filesystem;
+
+void ImageSearch::run(void)
+{
 	//** First of all, Init SDK
 	ROSE_InitSDK();
 
@@ -96,8 +99,76 @@ void ImageSearch::run(void){
 	float score2 = ROSE_Matching("1.jpg", "2.jpg");
 	printf("score2 = %.3lf\n", score2);
 
-
 	//** Remember to finish SDK
 	ROSE_FinishSDK();
 	printf("Completed!");
+}
+
+void ImageSearch::handleSearch(char* file, string locale)
+{
+	string indexFile = DEFAULT_INDEX;
+
+	fs::directory_iterator end_iter;
+	for (fs::directory_iterator dir_itr(DB_PATH); dir_itr != end_iter; ++dir_itr)
+	{
+		try
+		{
+			if (fs::is_regular_file(dir_itr->status()))
+			{
+				string fileName = dir_itr->path().stem().string();
+				if ( match(fileName, locale) )
+				{
+					indexFile = fileName;
+					break;
+				}
+			}
+		}
+		catch (const std::exception & ex)
+		{
+			cout << dir_itr->path().filename() << " " << ex.what() << endl;
+		}
+	}
+
+	if (indexFile == DEFAULT_INDEX)
+	{
+		cout << "no such locale" << endl;
+	}
+
+	try {
+		ROSE_InitSDK();
+		search(file,(DB_PATH + "\\" + indexFile).c_str());
+		ROSE_FinishSDK();
+	}
+	catch(exception & ex)				// catch any exception, including CdvsException
+	{
+		cerr << "Exception: " << ex.what() << endl;
+	}
+}
+
+void ImageSearch::search(char* file, const char* localePath)
+{
+	cout << "Search in " << localePath << endl;
+
+	ROSE_INDEX_Ptr index = ROSE_LoadIndex(localePath);
+
+	ROSE_Result result[10];
+	int max_ret_num = 10;
+	ROSE_Retrieval(index, file, result, &max_ret_num);
+
+	printf("Retrieval return %d\n", max_ret_num);
+	for (int i = 0; i < max_ret_num; i ++)
+	{
+		printf("i = %d, %s, %.3lf\n", i, result[i].image_id, result[i].score);
+	}
+
+	ROSE_FreeIndex(index);
+	index = NULL;
+}
+
+bool ImageSearch::match(string name, string key)
+{
+	int nameLength = name.length();
+	int keyLength = key.length();
+	
+	return (name.find(key) == nameLength - keyLength);
 }

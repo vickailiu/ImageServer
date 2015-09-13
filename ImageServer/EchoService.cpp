@@ -23,13 +23,18 @@ void EchoService::handle( LogicalConnection* pClient, IncomingPacket* pRequest )
 	WebsocketDataMessage response(EchoCommunication);
 	response.SetArguments(request.GetArg1());
 
-	try {
-		//ImageSearch::run();
-		DatabaseHandler::buildIndex();
-	}
-	catch(exception & ex)				// catch any exception, including CdvsException
+	if (request.GetArg1() == "1")
 	{
-		cerr << "Exception: " << ex.what() << endl;
+		try {
+			//ImageSearch::run();
+			DatabaseHandler::buildIndex();
+		}
+		catch(exception & ex)				// catch any exception, including CdvsException
+		{
+			cerr << "Exception: " << ex.what() << endl;
+		}
+	} else {
+		ImageSearch::handleSearch("IMG_0056.JPG", request.GetArg1());
 	}
 
 	client.PushPacket(&response);

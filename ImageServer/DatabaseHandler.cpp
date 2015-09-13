@@ -1,4 +1,5 @@
 #include "StdAfx.h"
+#include "Path.h"
 #include "DatabaseHandler.h"
 
 #include "ROSE_CDVSLib.h"
@@ -6,19 +7,12 @@
 #include "boost/filesystem/operations.hpp"
 #include "boost/filesystem/path.hpp"
 #include "boost/progress.hpp"
-#include <iostream>
-#include <stdio.h>
-#include <iostream>
-#include <fstream>
-#include <string>
 
 #define BOOST_FILESYSTEM_NO_DEPRECATED
 namespace fs = boost::filesystem;
-using namespace std;
 
-const string DB_PATH = "C:\\Dev\\uGuide_Server\\database";
-
-void DatabaseHandler::buildIndex(void) {
+void DatabaseHandler::buildIndex(void)
+{
 	
 	ROSE_InitSDK();
 
@@ -28,7 +22,8 @@ void DatabaseHandler::buildIndex(void) {
 
 }
 
-int DatabaseHandler::iterateBuildIndex(string dir, string dir_string){
+int DatabaseHandler::iterateBuildIndex(string dir, string dir_string)
+{
 	string temp_child_dir;
 	FILE_NAME child_dirs[100];	// list of child directories
 	int child_dir_count = 0;
@@ -130,16 +125,16 @@ int DatabaseHandler::iterateBuildIndex(string dir, string dir_string){
 	return 1;
 }
 
-string replace(string source, string key, string value)
-{
-	int i = 0;
-	for (;;) {
-		i = source.find(key, i);
-		if (i == string::npos) {
-			break;
-		}
-		source.replace(i, 1, value);
-	}
-
-	return source;
-}
+//string replace(string source, string key, string value)
+//{
+//	int i = 0;
+//	for (;;) {
+//		i = source.find(key, i);
+//		if (i == string::npos) {
+//			break;
+//		}
+//		source.replace(i, 1, value);
+//	}
+//
+//	return source;
+//}

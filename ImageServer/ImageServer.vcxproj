@@ -79,6 +79,7 @@
     <ClInclude Include="EchoService.h" />
     <ClInclude Include="GroupCommunicationService.h" />
     <ClInclude Include="ImageSearch.h" />
+    <ClInclude Include="Path.h" />
     <ClInclude Include="RoutedCommunicationService.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="StreamedCommunicationService.h" />
